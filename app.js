@@ -7,7 +7,6 @@ var HttpError = require('./error').HttpError,
     session = require('express-session'),
     sessionStore = require('./libs/sessionStore'),
     http = require('http'),
-    net = require('net'),
     app = express();
     User = require('./models/user').User,
     path = require('path'),
@@ -17,12 +16,6 @@ var HttpError = require('./error').HttpError,
 var server = http.createServer(app).listen(config.get('server:port'), function() {
     log.info('Express server listening port [:' + config.get('server:port') + ']');
 });
-
-var tcpServer = net.createServer( function( stream ) {
-    stream.on( 'data', function( data ) {
-        console.log(stream);
-    });
-}).listen(2000, 'localhost');
 
 var io = require('./socket')(server);
 app.set('io', io);
@@ -45,6 +38,7 @@ app.use(express.static(path.join(__dirname, 'public')))
 app.use(require('./middleware/loadUser'));
 require('./routes')(app, server);
 
+
 app.use(function(err, req, res, next) {
     if (typeof err == 'number') {
         err = new HttpError(err);
@@ -55,18 +49,16 @@ app.use(function(err, req, res, next) {
         res.sendHttpError(err);
     } else {
         if (app.get('env') == 'development') {
-            log.info(err.message);
-            err = new HttpError(500, err.message);
-            res.sendHttpError(err);
+              log.info(err.message);
+              err = new HttpError(500, err.message);
+              res.sendHttpError(err);
         } else {
             log.info(err.message);
             err = new HttpError(500, err.message);
             res.sendHttpError(err);
         }
     }
-}
-
-);
+});
 
 function createUser(user) {
     mongoose.models.User.on('index', function() {

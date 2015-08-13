@@ -11,10 +11,4 @@ module.exports = function(app, server) {
     app.get('/chat', checkAuth, require('./chat').get);
     app.get('/canvas', checkAuth, require('./canvas').get);
     app.post('/logout', require('./logout').post);
-    app.post('/gps', require('./gps').post);
-    app.get('/gps', require('./gps').get);
-    app.get('/backbone', require('./backbone').get);
-    app.post('/backbone', require('./backbone').post);
-    app.get('/map', require('./map').get);
-    app.post('/map', require('./map').post);
 };
