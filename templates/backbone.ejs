@@ -1,0 +1,89 @@
+<% layout('./layout/page') -%>
+<% block('title', 'bacbone') -%>
+
+<p class="lead">bacbone.ejs</p>
+<% if (user) { %>
+<p>name:<%=user.username%></p>
+<% }; %>
+
+<div class="containers">
+    <div class="hero-unit span8" id="rockets"></div>
+    <div class="hero-unit span8" id="rockets2"></div>
+    <div class="hero-unit span8" id="rockets3"></div>
+</div>
+
+<script src = "backboneRocket/Models/ModelRocket.js"></script>
+<script src = "backboneRocket/Views/ViewRocket.js"></script>
+<script src = "backboneRocket/Views/ViewRockets.js"></script>
+
+<script>
+    var app = app || {};
+
+    $(function() {
+
+        _.templateSettings = {
+            interpolate : /\{\{(.+?)\}\}/g
+        };
+
+        app.rocketsView = new RocketsView({
+            el: '#rockets'
+        });
+
+//        $.fn.rocket = function(cmd) {
+//            if (!window._rocket) {
+//                window._rocket = {};
+//            }
+//            if (cmd == 'test') {
+//                var id = Math.random();
+//                $(this).attr('data-rocket-id',id);
+//            }
+//            if (cmd == 'create') {
+//                var id = Math.random();
+//                $(this).attr('data-rocket-id',id);
+//                window._rocket[id] = new RocketsView({
+//                    el: this
+//                });
+//            } if (cmd == 'json') {
+//                var id = $(this).attr('data-rocket-id');
+//                return window._rocket[id].coll.toJSON();
+//            }
+//        }
+//        $('#rockets').rocket('create');
+//        $('#rockets2').rocket('create');
+    });
+</script>
+
+<script type="text/template" id="viewRocket">
+    <td class="name" contenteditable="true" width="60">{{ name }}</td>
+    <td class="form-horizontal">
+        <button data-rel="-10" class="changeSize btn btn-small btn-primary">-</button>
+        <input class="size" type="number" value="{{ size }}" style="width: 60px;">
+        <button data-rel="10" class="changeSize btn btn-small btn-success">+</button>
+    </td>
+    <td class="desc" contenteditable="true" width="60">{{ description }}</td>
+    <td>
+        Remove:
+        <button class="deleteRow btn btn-small btn-danger"><i class="icon-remove icon-white">X</i></button>
+    </td>
+</script>
+
+<script type="text/template" id="viewRockets">
+    <h2>My Rockets</h2>
+    <button class="btn btn-success addObject">add one</button>
+    <button class="btn btn-info toJSON">to JSON</button>
+    <table class="table table-striped">
+        <thead>
+        <th data-sort="name">Name</th>
+        <th data-sort="size">Size</th>
+        <th data-sort="description">Description</th>
+        <th>Actions</th>
+        </thead>
+        <tbody class="rocketsList"></tbody>
+    </table>
+    <div class="rocketsTotal">
+        Total items: <span class="rockets-count">0</span>
+        Total size: <span class="rockets-size">0</span>
+    </div>
+    <pre class="json-out"></pre>
+</script>
+
